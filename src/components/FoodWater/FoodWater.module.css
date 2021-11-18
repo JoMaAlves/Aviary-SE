@@ -1,11 +1,11 @@
 .title {
   display: flex;
   justify-content: space-between;
-  line-height: 25px;
+  line-height: 30px;
 }
 
 .icon {
-  margin-right: 16px;
+  margin-right: 10px;
 }
 
 .temperature {

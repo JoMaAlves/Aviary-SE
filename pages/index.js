@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from "../styles/Home.module.css";
 import Temperature from "../src/components/Temperature";
 import { Col, Container, Row } from "react-bootstrap";
+import Birds from "../src/components/Birds";
+import FoodWater from "../src/components/FoodWater";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCS2xpG7sXRq6QzVzPT_uj3CRwj8b-N-JU",
@@ -26,15 +28,31 @@ const data = getDatabase(app);
 
 export default function Home() {
   const [temperature, setTemperature] = useState(0);
+  const [birds, setBirds] = useState(0);
+  const [foodWater, setFoodWater] = useState(0);
 
   useEffect(() => {
     onValue(ref(data, "/temperature"), (snapshot) => {
       setTemperature(snapshot.val());
     });
+    onValue(ref(data, "/foodWater"), (snapshot) => {
+      setFoodWater(snapshot.val());
+    });
+    onValue(ref(data, "/birds"), (snapshot) => {
+      setBirds(snapshot.val());
+    });
   }, []);
 
   const handleTemperatureChange = (event) => {
     set(ref(data, "/temperature"), parseInt(event.target.value));
+  }
+  
+  const handleBirdsChange = (newBirds) => {
+    set(ref(data, "/birds"), newBirds);
+  }
+  
+  const handleFoodWaterChange = (event) => {
+    set(ref(data, "/foodWater"), parseInt(event.target.value));
   }
   
   return (
@@ -50,13 +68,13 @@ export default function Home() {
       <Container>
         <Row>
           <Col>
-            <Temperature temp={temperature} onChange={handleTemperatureChange}/>
+            <FoodWater foodWater={foodWater} manageFW={handleFoodWaterChange}/>
           </Col>
           <Col>
-            <Temperature temp={temperature} onChange={handleTemperatureChange}/>
+            <Temperature temp={temperature} manageTemp={handleTemperatureChange}/>
           </Col>
           <Col>
-            <Temperature temp={temperature} onChange={handleTemperatureChange}/>
+            <Birds birds={birds} manageBirds={handleBirdsChange}/>
           </Col>
         </Row>
       </Container>
